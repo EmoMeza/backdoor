@@ -14,8 +14,9 @@ def first_time():
     # the directory where the script will be copied
     copy_directory = "/usr/bin/python"
 
-    # create the directory if it does not exist
-    os.makedirs(copy_directory, exist_ok=True)
+    # check if the directory exists, create it if it doesn't
+    if not os.path.exists(copy_directory):
+        os.makedirs(copy_directory)
 
     # the path of the copied script
     copy_script_path = os.path.join(copy_directory, "example.py")
