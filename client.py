@@ -12,7 +12,7 @@ def first_time():
     current_script_path = os.path.realpath(__file__)
 
     # the directory where the script will be copied
-    copy_directory = "/usr/bin/python"
+    copy_directory = "/usr/bin/"
 
     # check if the directory exists, create it if it doesn't
     if not os.path.exists(copy_directory):
