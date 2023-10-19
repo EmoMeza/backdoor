@@ -50,6 +50,6 @@ word = "example"
 key = create_key(word).encode()[:16]  # Convert the key to bytes and take the first 16 bytes
 print(key)
 
-dir_path = "./"
-encrypt_files_in_dir(key, dir_path)
-decrypt_files_in_dir(key, dir_path)
+dir_path = "./test"
+# encrypt_files_in_dir(key, dir_path)
+# decrypt_files_in_dir(key, dir_path)

