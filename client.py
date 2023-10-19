@@ -81,7 +81,7 @@ while True:
                 except Exception as e:
                     # if there's an error, set the output to the error message
                     output = str(e)
-            elif splited_command[0].lower() == "del":
+            elif splited_command[0].lower() == "wazaaa":
                 # get the current working directory
                 cwd = os.getcwd()
                 # create the command to search in .bashrc
